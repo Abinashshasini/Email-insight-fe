@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [state, setState] = useState<LoginState>('idle');
 
   const handleLogin = () => {
-    window.open
+    window.location.href = 'http://localhost:5050/auth/google';
     setTimeout(() => setState('success'), 1500);
   };
 

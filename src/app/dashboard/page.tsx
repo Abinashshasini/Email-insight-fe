@@ -1,13 +1,24 @@
+'use client'
 import { AppShell } from '@/components/layout/AppShell'
 import { MetricCard } from '@/components/dashboard/MetricCard'
 import { UpcomingEvents } from '@/components/dashboard/UpcomingEvents'
 import { RecentInsights } from '@/components/dashboard/RecentInsights'
 import { mockMetrics } from '@/lib/mock-data'
+import { useUser } from '@/providers/UserProvider'
 
-export default function DashboardPage() {
+function greeting() {
+  const h = new Date().getHours()
+  if (h < 12) return 'Good morning'
+  if (h < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
+function DashboardContent() {
+  const { user } = useUser()
+  const firstName = user?.name.split(' ')[0] ?? 'there'
+
   return (
-    <AppShell title="Dashboard">
-
+    <>
       {/* Greeting */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-1">
@@ -17,10 +28,10 @@ export default function DashboardPage() {
           </span>
         </div>
         <h1 className="text-[28px] font-semibold text-[#111111] dark:text-[#F2F2F2] tracking-[-0.02em] leading-tight">
-          Good morning, Abinash.
+          {greeting()}, {firstName}.
         </h1>
         <p className="text-[15px] text-[#888888] dark:text-[#8A8A8A] mt-1.5">
-          Tuesday, 15 January · 2 flights and 1 bill need your attention today.
+          2 flights and 1 bill need your attention today.
         </p>
       </div>
 
@@ -57,7 +68,14 @@ export default function DashboardPage() {
 
       {/* Recent insights */}
       <RecentInsights />
+    </>
+  )
+}
 
+export default function DashboardPage() {
+  return (
+    <AppShell title="Dashboard">
+      <DashboardContent />
     </AppShell>
   )
 }
