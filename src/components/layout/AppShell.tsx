@@ -6,12 +6,13 @@ import { Topbar } from './Topbar'
 interface AppShellProps {
   title: string
   children: React.ReactNode
+  onSyncComplete?: () => void
+  noPadding?: boolean
 }
 
 function ShellSkeleton() {
   return (
     <div className="flex min-h-screen bg-[#F7F7F5] dark:bg-[#0A0A0A] animate-pulse">
-      {/* Sidebar skeleton */}
       <div className="hidden md:flex flex-col w-55 shrink-0 bg-white dark:bg-[#111111] border-r border-[#E4E4E0] dark:border-[#1F1F1F]">
         <div className="h-13 border-b border-[#E4E4E0] dark:border-[#1F1F1F] px-5 flex items-center">
           <div className="h-4 w-8 bg-[#E8E8E5] dark:bg-[#222222] rounded" />
@@ -22,7 +23,6 @@ function ShellSkeleton() {
           ))}
         </div>
       </div>
-      {/* Main skeleton */}
       <div className="flex-1 flex flex-col">
         <div className="h-13 border-b border-[#E4E4E0] dark:border-[#1F1F1F] bg-[#F7F7F5] dark:bg-[#0A0A0A]" />
         <div className="flex-1 p-6 space-y-4">
@@ -39,26 +39,30 @@ function ShellSkeleton() {
   )
 }
 
-function ShellInner({ title, children }: AppShellProps) {
+function ShellInner({ title, children, onSyncComplete, noPadding }: AppShellProps) {
   const { loading } = useUser()
 
   if (loading) return <ShellSkeleton />
 
   return (
-    <div className="flex min-h-screen bg-[#F7F7F5] dark:bg-[#0A0A0A]">
+    <div className="flex h-screen bg-[#F7F7F5] dark:bg-[#0A0A0A]">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <Topbar title={title} />
-        <main className="flex-1 p-6">{children}</main>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <Topbar title={title} onSyncComplete={onSyncComplete} />
+        <main className={noPadding ? 'flex-1 overflow-hidden' : 'flex-1 overflow-y-auto p-6'}>
+          {children}
+        </main>
       </div>
     </div>
   )
 }
 
-export function AppShell({ title, children }: AppShellProps) {
+export function AppShell({ title, children, onSyncComplete, noPadding }: AppShellProps) {
   return (
     <UserProvider>
-      <ShellInner title={title}>{children}</ShellInner>
+      <ShellInner title={title} onSyncComplete={onSyncComplete} noPadding={noPadding}>
+        {children}
+      </ShellInner>
     </UserProvider>
   )
 }
