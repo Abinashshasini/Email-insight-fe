@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { Zap, Check, Loader2, Plane, CreditCard, Package } from 'lucide-react';
 
@@ -173,6 +174,21 @@ export default function LoginPage() {
           <br />
           We only request read access.
         </p>
+
+        {/* Craftsman's signature — quiet entry to the architecture write-up */}
+        <Link
+          href="/architecture"
+          className="group mt-8 text-[12px] text-[#AAAAAA] dark:text-[#555555] hover:text-[#888888] dark:hover:text-[#8A8A8A] transition-colors"
+        >
+          Built with a production-grade queue architecture ·{' '}
+          <span className="underline-offset-2 group-hover:underline">
+            See how it works
+          </span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5">
+            {' '}
+            →
+          </span>
+        </Link>
       </div>
     </div>
   );
